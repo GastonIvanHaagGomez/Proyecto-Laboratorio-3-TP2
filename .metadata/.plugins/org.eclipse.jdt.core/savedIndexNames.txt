@@ -1,0 +1,10 @@
+INDEX VERSION 1.134+C:\Users\LUCHO\Downloads\tup2024-main\.metadata\.plugins\org.eclipse.jdt.core
+1431728868.index
+1208918437.index
+1865797976.index
+3991890705.index
+1075100302.index
+1177122280.index
+4169776419.index
+4005486797.index
+3835684299.index
