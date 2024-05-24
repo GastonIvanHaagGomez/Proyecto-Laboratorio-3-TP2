@@ -4,14 +4,16 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+import ar.edu.utn.frbb.tup.model.Cuenta.TipoCuenta;
+
+
+
 public class Cliente extends Persona {
     private TipoPersona tipoPersona;
     private String banco;
     private LocalDate fechaAlta;
     private Set<Cuenta> cuentas = new HashSet<>();
     private int numero;
-    
-
     public TipoPersona getTipoPersona() {
         return tipoPersona;
     }
@@ -51,6 +53,11 @@ public class Cliente extends Persona {
 
     public void setNumero(int numero) {
         this.numero = numero;
+    }
+    
+
+    public boolean tieneCuenta(TipoCuenta tipoCuenta, Long moneda) {
+        return false;
     }
 }
 

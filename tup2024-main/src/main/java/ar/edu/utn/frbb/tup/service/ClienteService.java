@@ -8,6 +8,7 @@ import ar.edu.utn.frbb.tup.persistence.ClienteDao;
 
 public class ClienteService {
 
+    public static final String agrega = null;
     ClienteDao clienteDao = new ClienteDao();
 
     public void darDeAltaCliente(Cliente cliente) throws ClienteAlreadyExistsException {
@@ -23,9 +24,9 @@ public class ClienteService {
     }
 
     public void agregarCuenta(Cuenta cuenta, Cliente cliente) throws TipoCuentaAlreadyExistsException {
-        if (cliente.tieneCuenta(cuenta.getTipoCuenta(), cuenta.getMoneda())) {
-            throw new TipoCuentaAlreadyExistsException("El cliente ya posee una cuenta de ese tipo y moneda");
-        }
-        cliente.addCuenta(cuenta);
+    if (cliente.tieneCuenta(cuenta.getTipoCuenta(), cuenta.getMoneda())) {
+        throw new TipoCuentaAlreadyExistsException("El cliente ya posee una cuenta de ese tipo y moneda");
     }
+    cliente.addCuenta(cuenta);
+}
 }

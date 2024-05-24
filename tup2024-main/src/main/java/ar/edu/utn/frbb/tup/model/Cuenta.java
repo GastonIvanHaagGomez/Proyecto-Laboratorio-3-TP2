@@ -18,17 +18,21 @@ public class Cuenta {
     private double saldo;
     private TipoCuenta tipoCuenta;
     private Cliente cliente;
+    private Long moneda;
+    private TipoCuenta tieneCuenta;
     private LocalDateTime ultimaOperacion;
     
     private List<Movimiento> movimientos;
 
     // Constructor
-    public Cuenta(Long numeroCuenta, double saldo, TipoCuenta tipoCuenta, Cliente cliente) {
+    public Cuenta(Long numeroCuenta, double saldo, TipoCuenta tipoCuenta, Cliente cliente, Long moneda, TipoCuenta tieneCuenta) {
         this.numeroCuenta = numeroCuenta;
         this.fechaCreacion = LocalDateTime.now();
         this.saldo = saldo;
         this.tipoCuenta = tipoCuenta;
         this.cliente = cliente;
+        this.moneda = moneda;
+        this.tieneCuenta = tieneCuenta;
         this.movimientos = new ArrayList<>();
     }
 
@@ -39,6 +43,16 @@ public class Cuenta {
 
     public void setNumeroCuenta(Long numeroCuenta) {
         this.numeroCuenta = numeroCuenta;
+    }
+    public TipoCuenta getTieneCuenta() {
+        return tieneCuenta;
+    }
+   
+    public Long getMoneda() {
+        return moneda;
+    }
+    public void setMoneda(Long moneda) {
+        this.moneda = moneda;
     }
 
     public LocalDateTime getFechaCreacion() {
@@ -107,4 +121,6 @@ public class Cuenta {
     public void agregarMovimiento(Movimiento movimiento) {
         this.movimientos.add(movimiento);
     }
+
+    
 }

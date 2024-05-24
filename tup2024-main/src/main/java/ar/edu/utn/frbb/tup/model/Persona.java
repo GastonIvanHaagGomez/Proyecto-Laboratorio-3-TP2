@@ -9,6 +9,7 @@ public class Persona {
     private String direccion;
     private long telefono;
     private LocalDate fechaNacimiento;
+    private Long edad;
 
     public String getNombre() {
         return nombre;
@@ -16,6 +17,12 @@ public class Persona {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+    public Long getEdad() {
+        return edad;
+    }
+    public void setEdad(Long edad) {
+        this.edad = edad;
     }
 
     public String getApellido() {

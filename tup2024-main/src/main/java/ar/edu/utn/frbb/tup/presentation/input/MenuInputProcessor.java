@@ -109,7 +109,7 @@ public class MenuInputProcessor extends BaseInputProcessor {
             clearScreen();
             switch (choice) {
                 case 1:
-                    Cuenta c = cuentaInputProcessor.crearCuenta(clientes);
+                    Cuenta c = cuentaInputProcessor.crearCuenta(clientes, null);
                     break;
                 case 2:
                     CuentaInputProcessor.realizarDeposito(clientes);

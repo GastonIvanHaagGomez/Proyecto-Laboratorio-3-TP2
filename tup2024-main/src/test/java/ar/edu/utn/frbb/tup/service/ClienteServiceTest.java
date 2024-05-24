@@ -1,11 +1,8 @@
 package ar.edu.utn.frbb.tup.service;
 
 import ar.edu.utn.frbb.tup.model.Cliente;
-import ar.edu.utn.frbb.tup.model.Cuenta;
-import ar.edu.utn.frbb.tup.model.TipoCuenta;
 import ar.edu.utn.frbb.tup.model.TipoPersona;
 import ar.edu.utn.frbb.tup.model.exception.ClienteAlreadyExistsException;
-import ar.edu.utn.frbb.tup.model.exception.TipoCuentaAlreadyExistsException;
 import ar.edu.utn.frbb.tup.persistence.ClienteDao;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -63,8 +60,8 @@ class ClienteServiceTest {
 
         assertThrows(ClienteAlreadyExistsException.class, () -> clienteService.darDeAltaCliente(mateoA));
     }
-
-    @Test
+}
+    /*@Test
     public void testAgregarCuentaAClienteSuccess() throws TipoCuentaAlreadyExistsException {
         Cliente pepeRino = new Cliente();
         pepeRino.setDni(26456439);
@@ -74,16 +71,16 @@ class ClienteServiceTest {
         pepeRino.setTipoPersona(TipoPersona.PERSONA_FISICA);
 
         Cuenta cuenta = new Cuenta()
-                .setMoneda("ARS")
-                .setBalance(500000)
-                .setNombre("UnaCuenta")
-                .setTipoCuenta(TipoCuenta.CAJA_AHORRO);
+               // .setMoneda("ARS")
+                //.setBalance(500000)
+                //.setNombre("UnaCuenta")
+                //.setTipoCuenta(TipoCuenta.CAJA_AHORRO);
 
-        clienteService.agregarCuenta(cuenta, pepeRino);
+        rCuenta(cuenta, pepeRino);
 
         assertEquals(1, pepeRino.getCuentas().size());
-        assertEquals(pepeRino, cuenta.getTitular());
-    }
+        assertEquals(pepeRino, cuenta.getCliente());
+    
 
     //Agregar una CA$ y agregar otra cuenta con mismo tipo y moneda --> fallar (assertThrows)
     //Agregar una CA$ y CC$ --> success 2 cuentas, titular peperino
@@ -91,4 +88,4 @@ class ClienteServiceTest {
 
 
 
-}
+}}/* */

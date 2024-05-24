@@ -2,6 +2,7 @@ package ar.edu.utn.frbb.tup.presentation.input;
 
 import ar.edu.utn.frbb.tup.model.Cliente;
 import ar.edu.utn.frbb.tup.model.Cuenta;
+import ar.edu.utn.frbb.tup.model.Cuenta.TipoCuenta;
 import ar.edu.utn.frbb.tup.model.Movimiento;
 
 
@@ -15,21 +16,18 @@ import java.util.Scanner;
 public class CuentaInputProcessor extends BaseInputProcessor {
 
     private static final Scanner scanner = new Scanner(System.in);
+    private TipoCuenta tieneCuenta;
 
     // Método para crear una cuenta bancaria.
-    public Cuenta crearCuenta(List<Cliente> clientes) {
-        // Para crear una cuenta si o si el DNI debe coincidir con un cliente ya
-        // generado.
+    public Cuenta crearCuenta(List<Cliente> clientes, Long moneda) {
         long dniCliente;
         do {
             System.out.print("Ingrese el DNI del cliente para asociar la cuenta (8 dígitos numéricos): ");
             while (!scanner.hasNextLong()) {
-                System.out.println("Por favor, ingrese un número válido para el DNI."); // En caso de escribir mal el
-                                                                                        // DNI.
-                scanner.next(); // Consumir el valor inválido
+                System.out.println("Por favor, ingrese un número válido para el DNI.");
+                scanner.next();
             }
             dniCliente = scanner.nextLong();
-            // Validación al momento de ingresar el DNI.
         } while (dniCliente < 0 || String.valueOf(dniCliente).length() != 8);
 
         Cliente clienteAsociado = null;
@@ -40,13 +38,10 @@ public class CuentaInputProcessor extends BaseInputProcessor {
             }
         }
 
-        // Si el DNI esta asociado a un cliente, entonces continua al siguiente paso.
-        // Se consulta tipo de cuenta: caja ahorro o cta. corriente.
         if (clienteAsociado != null) {
             System.out.print("Ingrese el tipo de cuenta (A para caja de ahorro, C para cuenta corriente): ");
             String tipoCuentaStr = scanner.next().toUpperCase();
 
-            // Validación del tipo de cuenta ingresado.
             Cuenta.TipoCuenta tipoCuenta;
             if (tipoCuentaStr.equals("A")) {
                 tipoCuenta = Cuenta.TipoCuenta.CAJA_AHORRO;
@@ -57,7 +52,6 @@ public class CuentaInputProcessor extends BaseInputProcessor {
                 return null;
             }
 
-            // Se consulta el saldo inicial que tendra la cuenta bancaria.
             double saldoInicial;
             do {
                 System.out.print("Ingrese el saldo inicial de la cuenta: ");
@@ -66,12 +60,10 @@ public class CuentaInputProcessor extends BaseInputProcessor {
                     scanner.next();
                 }
                 saldoInicial = scanner.nextDouble();
-            } while (saldoInicial < 0); // Mientras el saldo sea mayor a 0.
+            } while (saldoInicial < 0);
 
             scanner.nextLine();
 
-            // Se solicita un numero de cuenta. Este número debe ser unico. Es el número que
-            // identifica cada tarjeta.
             Long numeroCuenta = null;
             String input;
             boolean isValid;
@@ -80,7 +72,6 @@ public class CuentaInputProcessor extends BaseInputProcessor {
                 System.out.print("Ingrese el número de cuenta (6 dígitos numéricos): ");
                 input = scanner.nextLine();
 
-                // Validar que el input tenga 6 dígitos y sea numérico
                 isValid = input.matches("\\d{6}");
 
                 if (isValid) {
@@ -101,15 +92,13 @@ public class CuentaInputProcessor extends BaseInputProcessor {
 
             System.out.println("Número de cuenta ingresado: " + numeroCuenta);
 
-            Cuenta cuenta = new Cuenta(numeroCuenta, saldoInicial, tipoCuenta, clienteAsociado);
+            Cuenta cuenta = new Cuenta(numeroCuenta, saldoInicial, tipoCuenta, clienteAsociado, moneda, tieneCuenta);
             clienteAsociado.addCuenta(cuenta);
 
             System.out.println("Cuenta creada y asociada correctamente al cliente: " + clienteAsociado.getNombre() + " "
                     + clienteAsociado.getApellido());
             return cuenta;
 
-            // En caso de no encontrar ningun cliente con el DNI que se ingreso, devuelve un
-            // mensaje de error.
         } else {
             System.out.println("Error. No se ha encontrado ningún cliente con este DNI.");
             return null;

@@ -1,7 +1,8 @@
 package ar.edu.utn.frbb.tup.persistence.entity;
 
-import ar.edu.utn.frbb.tup.model.Persona;
+
 import ar.edu.utn.frbb.tup.model.Cuenta.TipoCuenta;
+import ar.edu.utn.frbb.tup.model.Cliente;
 import ar.edu.utn.frbb.tup.model.Cuenta;
 
 
@@ -12,7 +13,7 @@ public class CuentaEntity extends BaseEntity{
     LocalDateTime fechaCreacion;
     Double saldo;
     TipoCuenta tipoCuenta;
-    String cliente;
+    Cliente cliente;
 
     public CuentaEntity(Cuenta cuenta) {
         super(cuenta.getNumeroCuenta());
@@ -20,7 +21,7 @@ public class CuentaEntity extends BaseEntity{
         
         this.saldo = cuenta.getSaldo();
         this.tipoCuenta = cuenta.getTipoCuenta();
-       // this.cliente = cuenta.getPersona().getDni();
+        this.cliente = cuenta.getCliente();
         this.fechaCreacion = cuenta.getFechaCreacion();
     }
 }

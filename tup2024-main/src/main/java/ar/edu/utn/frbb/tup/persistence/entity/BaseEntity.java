@@ -1,6 +1,6 @@
 package ar.edu.utn.frbb.tup.persistence.entity;
 
-import ar.edu.utn.frbb.tup.model.Cuenta;
+
 
 public class BaseEntity {
     private final Long id;
