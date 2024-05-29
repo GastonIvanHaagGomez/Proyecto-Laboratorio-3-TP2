@@ -66,7 +66,7 @@ public class MenuInputProcessor extends BaseInputProcessor {
             System.out.print("\nIngrese su opción (1-5): ");
 
             int choice = getUserChoice();
-            
+
             clearScreen();
             switch (choice) {
                 case 1: // Opcion 1: Crear un nuevo Cliente.
@@ -74,13 +74,13 @@ public class MenuInputProcessor extends BaseInputProcessor {
                     banco.getClientes().add(c);
                     break;
                 case 2: // Opcion 2: Mostrar los clientes generados.
-                    clienteInputProcessor.mostrarClientes(banco.getClientes());
+                    clienteInputProcessor.mostrarClientes();
                     break;
                 case 3: // Opcion 3: Modificar un Cliente generado.
-                    clienteInputProcessor.modificarCliente(banco.getClientes());
+                    clienteInputProcessor.modificarCliente();
                     break;
                 case 4: // Opcion 4: Eliminar un Cliente generado.
-                    clienteInputProcessor.eliminarCliente(banco.getClientes());
+                    clienteInputProcessor.eliminarCliente();
                     break;
                 case 5: // Opcion 5: Volver al menú principal.
                     exitClienteMenu = true;

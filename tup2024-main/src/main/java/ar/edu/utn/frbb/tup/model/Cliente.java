@@ -1,6 +1,7 @@
 package ar.edu.utn.frbb.tup.model;
 
-import java.time.LocalDate;   
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -59,5 +60,15 @@ public class Cliente extends Persona {
     public boolean tieneCuenta(TipoCuenta tipoCuenta, Long moneda) {
         return false;
     }
+    public Long getEdad() {
+        if (fechaNacimiento == null) {
+            return null;
+        }
+        return (long) Period.between(fechaNacimiento, LocalDate.now()).getYears();
+    }
+
+
+
+
 }
 

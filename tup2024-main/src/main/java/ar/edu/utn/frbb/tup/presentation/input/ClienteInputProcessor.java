@@ -1,9 +1,7 @@
 package ar.edu.utn.frbb.tup.presentation.input;
 
 import ar.edu.utn.frbb.tup.model.Cliente;  
-
 import ar.edu.utn.frbb.tup.model.TipoPersona;
-
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -16,14 +14,14 @@ public class ClienteInputProcessor extends BaseInputProcessor {
     private static List<Cliente> clientes = new ArrayList<>();
 
     public Cliente ingresarCliente() {
-    	Cliente cliente = new Cliente();
+        Cliente cliente = new Cliente();
         clearScreen();
         Scanner scanner = new Scanner(System.in);
 
         // Ingreso del nombre del cliente:
         System.out.print("Ingrese el nombre del cliente: ");
         String nombre = scanner.nextLine().trim();
-        
+
         // Valida que se ingrese el nombre correctamente.
         while (!nombre.matches("[A-Za-záéíóúÁÉÍÓÚüÜñÑ\\s]+")) {
             System.out.print("Nombre inválido. Por favor, ingrese un nombre válido: ");
@@ -34,7 +32,7 @@ public class ClienteInputProcessor extends BaseInputProcessor {
         // Ingreso del apellido del cliente:
         System.out.print("Ingrese el apellido del cliente: ");
         String apellido = scanner.nextLine().trim();
-        
+
         // Valida que se ingrese el apellido correctamente.
         while (!apellido.matches("[A-Za-záéíóúÁÉÍÓÚüÜñÑ\\s]+")) {
             System.out.println("Apellido inválido. Por favor, ingrese un apellido válido: ");
@@ -42,13 +40,12 @@ public class ClienteInputProcessor extends BaseInputProcessor {
         }
         cliente.setApellido(apellido);
 
-     // Ingreso y validación del número de DNI
-        long dni = 0;
+        // Ingreso y validación del número de DNI
         boolean validDni = false;
         while (!validDni) {
             try {
                 System.out.print("Ingrese el número de DNI del cliente (8 dígitos): ");
-                dni = scanner.nextLong();
+                long dni = scanner.nextLong();
                 scanner.nextLine(); // Consumir el salto de línea
 
                 // Verificar si el DNI tiene 8 dígitos
@@ -56,16 +53,13 @@ public class ClienteInputProcessor extends BaseInputProcessor {
                     System.out.print("Error. El DNI debe tener exactamente 8 dígitos.");
                 } else {
                     // Verificar si el DNI ya está en uso por otro cliente
-                    boolean dniExists = false;
-                    for (Cliente c : clientes) {
-                        if (c.getDni() == dni) {
-                            dniExists = true;
-                            System.out.println("El DNI ingresado ya está asociado a otro cliente. Por favor, ingrese un DNI único.");
-                            break;
-                        }
-                    }
-                    if (!dniExists) {
+                    boolean dniExists = clientes.stream().anyMatch(c -> c.getDni() == dni);
+                    if (dniExists) {
+                        System.out.println(
+                                "El DNI ingresado ya está asociado a otro cliente. Por favor, ingrese un DNI único.");
+                    } else {
                         validDni = true;
+                        cliente.setDni(dni);
                     }
                 }
             } catch (InputMismatchException e) {
@@ -73,19 +67,18 @@ public class ClienteInputProcessor extends BaseInputProcessor {
                 scanner.nextLine(); // Consumir el salto de línea y limpiar el buffer de entrada
             }
         }
-        cliente.setDni(dni);
-        
+
         // Ingreso de la dirección del cliente.
         System.out.print("Ingrese la dirección del cliente: ");
         String direccion = scanner.nextLine().trim();
-        
+
         // Validación que la dirección no este vacía.
         while (direccion.isEmpty()) {
             System.out.println("Dirección inválida. Por favor, ingrese una dirección válida: ");
             direccion = scanner.nextLine().trim();
         }
         cliente.setDireccion(direccion);
-        
+
         // Ingreso y validación del numero de telefono del cliente.
         long telefono = 0;
         boolean validTelefono = false;
@@ -106,11 +99,9 @@ public class ClienteInputProcessor extends BaseInputProcessor {
         }
         cliente.setTelefono(telefono);
 
-
         // Ingreso de tipo de persona.
         System.out.print("Ingrese el tipo de persona Física(F) o Jurídica(J): ");
         String tipoPersonaStr = scanner.nextLine().toUpperCase();
-
 
         // Validación de tipo de persona.
         while (!tipoPersonaStr.equals("F") && !tipoPersonaStr.equals("J")) {
@@ -123,7 +114,7 @@ public class ClienteInputProcessor extends BaseInputProcessor {
         // Ingreso del banco del cliente.
         System.out.print("Ingrese el banco del cliente: ");
         String banco = scanner.nextLine().trim();
-        
+
         // Validación que el banco no este vacío.
         while (banco.isEmpty()) {
             System.out.println("Banco inválido. Por favor, ingrese un banco válido: ");
@@ -131,28 +122,39 @@ public class ClienteInputProcessor extends BaseInputProcessor {
         }
         cliente.setBanco(banco);
 
-        // Ingreso y validación de fecha de alta del cliente.
-        System.out.print("Ingrese la fecha de alta del cliente (Formato: YYYY-MM-DD): ");
-        LocalDate fechaAlta = null;
-        boolean fechaValida = false;
-        while (!fechaValida) {
-            try {
-                fechaAlta = LocalDate.parse(scanner.nextLine());
-                fechaValida = true;
-            } catch (Exception e) {
-                System.out.print("Formato de fecha inválido. Ingrese la fecha en formato YYYY-MM-DD: ");
-            }
+       // Ingreso y validación de fecha de alta del cliente.
+System.out.print("Ingrese la fecha de alta del cliente (Formato: YYYY-MM-DD): ");
+LocalDate fechaAlta = null;
+boolean fechaValida = false;
+while (!fechaValida) {
+    try {
+        fechaAlta = LocalDate.parse(scanner.nextLine());
+        LocalDate hoy = LocalDate.now();
+        int edad = hoy.getYear() - fechaAlta.getYear();
+        
+        // Comprobar si el cliente tiene entre 18 y 100 años
+        if (edad >= 18 && edad <= 100) {
+            fechaValida = true;
+        } else {
+            System.out.print("El cliente debe tener entre 18 y 100 años. Ingrese nuevamente la fecha en formato YYYY-MM-DD: ");
         }
-        cliente.setFechaAlta(fechaAlta);
-     
-
-        clearScreen();
-        return cliente;
+    } catch (Exception e) {
+        System.out.print("Formato de fecha inválido. Ingrese la fecha en formato YYYY-MM-DD: ");
     }
+}
+cliente.setFechaAlta(fechaAlta);
+
+// Añadir el nuevo cliente a la lista de clientes
+clientes.add(cliente);
+
+clearScreen();
+return cliente;
+
+}
     
- // Método para mostrar la lista de clientes generados.
-    public void mostrarClientes(List<Cliente> clientes) {
-    	System.out.println("---------------------------------------");
+    // Método para mostrar la lista de clientes generados.
+    public void mostrarClientes() {
+        System.out.println("---------------------------------------");
         System.out.println("Lista de clientes generados:");
         for (Cliente cliente : clientes) {
             System.out.println("Nombre: " + cliente.getNombre());
@@ -166,8 +168,9 @@ public class ClienteInputProcessor extends BaseInputProcessor {
             System.out.println("---------------------------------------");
         }
     }
+
     // Método para modificar la lista de clientes generados.
-    public void modificarCliente(List<Cliente> clientes) {
+    public void modificarCliente() {
         Scanner scanner = new Scanner(System.in);
 
         // Mostrar lista de clientes para seleccionar uno a modificar
@@ -226,20 +229,24 @@ public class ClienteInputProcessor extends BaseInputProcessor {
                 cliente.setApellido(nuevoApellido);
                 break;
             case 3:
-                long nuevoDni;
                 boolean validDni = false;
                 do {
                     System.out.print("Ingrese el nuevo DNI: ");
-                    nuevoDni = scanner.nextLong();
+                    long nuevoDni = scanner.nextLong();
                     scanner.nextLine(); // Consumir el salto de línea
-                    // Valida que el DNI tenga 8 dígitos
+                    // Valida que el DNI tenga 8 dígitos y sea único
                     if (String.valueOf(nuevoDni).length() != 8) {
                         System.out.println("Error. El DNI debe tener exactamente 8 dígitos.");
                     } else {
-                        validDni = true;
+                        boolean dniExists = clientes.stream().anyMatch(c -> c.getDni() == nuevoDni && c != cliente);
+                        if (dniExists) {
+                            System.out.println("El DNI ingresado ya está asociado a otro cliente. Por favor, ingrese un DNI único.");
+                        } else {
+                            validDni = true;
+                            cliente.setDni(nuevoDni);
+                        }
                     }
                 } while (!validDni);
-                cliente.setDni(nuevoDni);
                 break;
             case 4:
                 System.out.print("Ingrese la nueva dirección: ");
@@ -289,8 +296,8 @@ public class ClienteInputProcessor extends BaseInputProcessor {
                 System.out.println("Opción inválida.");
         }
     }
-  
-    public void eliminarCliente(List<Cliente> clientes) {
+
+    public void eliminarCliente() {
         Scanner scanner = new Scanner(System.in);
 
         // Mostrar lista de clientes para seleccionar uno a eliminar
@@ -324,6 +331,4 @@ public class ClienteInputProcessor extends BaseInputProcessor {
             System.out.println("Operación cancelada.");
         }
     }
-  
 }
-

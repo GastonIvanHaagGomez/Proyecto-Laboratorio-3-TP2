@@ -8,7 +8,7 @@ public class Persona {
     private long dni;
     private String direccion;
     private long telefono;
-    private LocalDate fechaNacimiento;
+    protected LocalDate fechaNacimiento;
     private Long edad;
 
     public String getNombre() {
