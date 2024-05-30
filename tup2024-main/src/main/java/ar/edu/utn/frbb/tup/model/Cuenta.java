@@ -1,70 +1,45 @@
 package ar.edu.utn.frbb.tup.model;
 
-import java.time.LocalDateTime; 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Cuenta {
-    
-    // Enumeración para representar el tipo de cuenta
     public enum TipoCuenta {
-        CAJA_AHORRO,
-        CUENTA_CORRIENTE
+        CAJA_AHORRO, CUENTA_CORRIENTE
     }
-    
-    // Atributos de Cuenta.
+
     private Long numeroCuenta;
     private LocalDateTime fechaCreacion;
     private double saldo;
     private TipoCuenta tipoCuenta;
     private Cliente cliente;
     private Long moneda;
-    private TipoCuenta tieneCuenta;
     private LocalDateTime ultimaOperacion;
-    
     private List<Movimiento> movimientos;
 
-    // Constructor
-    public Cuenta(Long numeroCuenta, double saldo, TipoCuenta tipoCuenta, Cliente cliente, Long moneda, TipoCuenta tieneCuenta) {
-        this.numeroCuenta = numeroCuenta;
+    public Cuenta() {
         this.fechaCreacion = LocalDateTime.now();
-        this.saldo = saldo;
-        this.tipoCuenta = tipoCuenta;
-        this.cliente = cliente;
-        this.moneda = moneda;
-        this.tieneCuenta = tieneCuenta;
         this.movimientos = new ArrayList<>();
     }
 
-    // Métodos getter y setter
+    public Cuenta(Long numeroCuenta, TipoCuenta tipoCuenta, Cliente cliente, double saldoInicial, Long moneda) {
+        this.numeroCuenta = numeroCuenta;
+        this.tipoCuenta = tipoCuenta;
+        this.cliente = cliente;
+        this.saldo = saldoInicial;
+        this.moneda = moneda;
+        this.fechaCreacion = LocalDateTime.now();
+        this.ultimaOperacion = LocalDateTime.now();
+        this.movimientos = new ArrayList<>();
+    }
+
     public Long getNumeroCuenta() {
         return numeroCuenta;
     }
 
     public void setNumeroCuenta(Long numeroCuenta) {
         this.numeroCuenta = numeroCuenta;
-    }
-    public TipoCuenta getTieneCuenta() {
-        return tieneCuenta;
-    }
-   
-    public Long getMoneda() {
-        return moneda;
-    }
-    public void setMoneda(Long moneda) {
-        this.moneda = moneda;
-    }
-
-    public LocalDateTime getFechaCreacion() {
-        return fechaCreacion;
-    }
-
-    public double getSaldo() {
-        return saldo;
-    }
-
-    public void setSaldo(double saldo) {
-        this.saldo = saldo;
     }
 
     public TipoCuenta getTipoCuenta() {
@@ -75,24 +50,6 @@ public class Cuenta {
         this.tipoCuenta = tipoCuenta;
     }
 
-    public LocalDateTime getUltimaOperacion() {
-        return ultimaOperacion;
-    }
-
-    public void setUltimaOperacion(LocalDateTime ultimaOperacion) {
-        this.ultimaOperacion = ultimaOperacion;
-    }
-    
-    public List<Movimiento> getMovimientos() {
-		return movimientos;
-	}
-
-	public void setMovimientos(List<Movimiento> movimientos) {
-		this.movimientos = movimientos;
-	}
-    
-
-    // Método getter para obtener el cliente asociado
     public Cliente getCliente() {
         return cliente;
     }
@@ -101,26 +58,60 @@ public class Cuenta {
         this.cliente = cliente;
     }
 
-    public void depositar(double monto) {
-        this.saldo += monto;
-        this.ultimaOperacion = LocalDateTime.now(); // Actualizar la fecha y hora de la última operación
+    public double getSaldo() {
+        return saldo;
     }
 
-    // Método para retirar dinero de la cuenta
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
+
+    public Long getMoneda() {
+        return moneda;
+    }
+
+    public void setMoneda(Long moneda) {
+        this.moneda = moneda;
+    }
+
+    public LocalDateTime getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public LocalDateTime getUltimaOperacion() {
+        return ultimaOperacion;
+    }
+
+    public void setUltimaOperacion(LocalDateTime ultimaOperacion) {
+        this.ultimaOperacion = ultimaOperacion;
+    }
+
+    public List<Movimiento> getMovimientos() {
+        return movimientos;
+    }
+
+    public void setMovimientos(List<Movimiento> movimientos) {
+        this.movimientos = movimientos;
+    }
+
+    public void depositar(double monto) {
+        this.saldo += monto;
+        this.ultimaOperacion = LocalDateTime.now();
+    }
+
     public boolean retirar(double monto) {
         if (monto <= this.saldo) {
             this.saldo -= monto;
-            this.ultimaOperacion = LocalDateTime.now(); // Actualizar la fecha y hora de la última operación
-            return true; // Retiro exitoso
+            this.ultimaOperacion = LocalDateTime.now();
+            return true;
         } else {
-            return false; // Saldo insuficiente
+            return false;
         }
     }
-    
- // Método para agregar un movimiento a la cuenta
+
     public void agregarMovimiento(Movimiento movimiento) {
         this.movimientos.add(movimiento);
     }
-
-    
 }
+
+

@@ -5,16 +5,13 @@ import java.time.Period;
 import java.util.HashSet;
 import java.util.Set;
 
-import ar.edu.utn.frbb.tup.model.Cuenta.TipoCuenta;
-
-
-
 public class Cliente extends Persona {
     private TipoPersona tipoPersona;
     private String banco;
     private LocalDate fechaAlta;
     private Set<Cuenta> cuentas = new HashSet<>();
     private int numero;
+
     public TipoPersona getTipoPersona() {
         return tipoPersona;
     }
@@ -43,11 +40,11 @@ public class Cliente extends Persona {
         return cuentas;
     }
 
-    public void addCuenta(Cuenta cuenta) {
+    public void agregarCuenta(Cuenta cuenta) {
+        cuenta.setCliente(this);
         this.cuentas.add(cuenta);
     }
 
-    
     public int getNumero() {
         return numero;
     }
@@ -55,20 +52,17 @@ public class Cliente extends Persona {
     public void setNumero(int numero) {
         this.numero = numero;
     }
-    
 
-    public boolean tieneCuenta(TipoCuenta tipoCuenta, Long moneda) {
-        return false;
+    public boolean tieneCuenta(Cuenta.TipoCuenta tipoCuenta, Long moneda) {
+        return cuentas.stream().anyMatch(c -> c.getTipoCuenta() == tipoCuenta && c.getMoneda().equals(moneda));
     }
+
     public Long getEdad() {
         if (fechaNacimiento == null) {
             return null;
         }
         return (long) Period.between(fechaNacimiento, LocalDate.now()).getYears();
     }
-
-
-
-
 }
+
 
