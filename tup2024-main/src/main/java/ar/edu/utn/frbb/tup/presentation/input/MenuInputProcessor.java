@@ -1,6 +1,6 @@
 package ar.edu.utn.frbb.tup.presentation.input;
-
-import java.util.InputMismatchException; 
+ 
+import java.util.InputMismatchException;   
 import java.util.List;
 import java.util.Scanner;
 
@@ -19,13 +19,16 @@ public class MenuInputProcessor extends BaseInputProcessor {
 
     public void renderMenu(Banco banco) {
         while (!exit) {
-            System.out.println("Bienvenido a la aplicación de Banco!");
-            System.out.println("1.- Cliente");
-            System.out.println("2.- Cuenta");
-            System.out.println("3.- Movimientos.");
-            System.out.println("4.- Realizar una transferencia.");
-            System.out.println("5.- Salir del programa.");
-            System.out.print("Ingrese su opción (1-5): ");
+        	System.out.println("----------------------------------------");
+            System.out.println("| Bienvenido a la aplicación de Banco! |");
+            System.out.println("----------------------------------------");
+            System.out.println("| 1.- Cliente                          |");
+            System.out.println("| 2.- Cuenta                           |");
+            System.out.println("| 3.- Movimientos                      |");
+            System.out.println("| 4.- Realizar una transferencia       |");
+            System.out.println("| 5.- Salir del programa               |");
+            System.out.println("----------------------------------------");
+            System.out.print("\nIngrese su opción (1-5): ");
 
             int choice = getUserChoice();
             
@@ -53,42 +56,45 @@ public class MenuInputProcessor extends BaseInputProcessor {
         }
     }
     
-
     private void renderClienteMenu(Banco banco) {
         boolean exitClienteMenu = false;
         while (!exitClienteMenu) {
-            System.out.println("Menú de Clientes");
-            System.out.println("1.- Generar un nuevo Cliente.");
-            System.out.println("2.- Mostrar los Clientes generados.");
-            System.out.println("3.- Modificar un Cliente generado.");
-            System.out.println("4.- Eliminar un Cliente generado.");
-            System.out.println("5.- Volver al menú principal.");
+        	System.out.println("--------------------------------------");
+            System.out.println("|              Clientes              |");
+            System.out.println("--------------------------------------");
+            System.out.println("| 1.- Generar un nuevo Cliente       |");
+            System.out.println("| 2.- Mostrar los Clientes generados |");
+            System.out.println("| 3.- Modificar un Cliente generado  |");
+            System.out.println("| 4.- Eliminar un Cliente generado   |");
+            System.out.println("| 5.- Volver al menú principal       |");
+            System.out.println("--------------------------------------");
             System.out.print("\nIngrese su opción (1-5): ");
 
             int choice = getUserChoice();
-
+            
             clearScreen();
             switch (choice) {
-                case 1: // Opcion 1: Crear un nuevo Cliente.
-                    Cliente c = clienteInputProcessor.ingresarCliente();
-                    banco.getClientes().add(c);
-                    break;
-                case 2: // Opcion 2: Mostrar los clientes generados.
-                    clienteInputProcessor.mostrarClientes();
-                    break;
-                case 3: // Opcion 3: Modificar un Cliente generado.
-                    clienteInputProcessor.modificarCliente();
-                    break;
-                case 4: // Opcion 4: Eliminar un Cliente generado.
-                    clienteInputProcessor.eliminarCliente();
-                    break;
-                case 5: // Opcion 5: Volver al menú principal.
-                    exitClienteMenu = true;
-                    break;
-                default:
-                    System.out.print("Opción inválida. Por favor seleccione (1-5): ");
-                    break;
-            }
+            case 1: // Opcion 1: Crear un nuevo Cliente.
+                Cliente c = clienteInputProcessor.ingresarCliente();
+                banco.getClientes().add(c);
+                break;
+            case 2: // Opcion 2: Mostrar los clientes generados.
+                clienteInputProcessor.mostrarClientes();
+                break;
+            case 3: // Opcion 3: Modificar un Cliente generado.
+                clienteInputProcessor.modificarCliente();
+                break;
+            case 4: // Opcion 4: Eliminar un Cliente generado.
+                clienteInputProcessor.eliminarCliente();
+                break;
+            case 5: // Opcion 5: Volver al menú principal.
+                exitClienteMenu = true;
+                break;
+            default:
+                System.out.print("Opción inválida. Por favor seleccione (1-5): ");
+                break;
+        }
+            
         }
     }
 
@@ -96,31 +102,34 @@ public class MenuInputProcessor extends BaseInputProcessor {
         boolean exitCuentaMenu = false;
 
         while (!exitCuentaMenu) {
-            System.out.println("Menú de Cuentas Bancarias");
-            System.out.println("1.- Crear cuenta bancaria.");
-            System.out.println("2.- Realizar depósito bancario.");
-            System.out.println("3.- Realizar retiro bancario.");
-            System.out.println("4.- Consultar saldo de la cuenta.");
-            System.out.println("5.- Volver al menú principal.");
+        	System.out.println("------------------------------------");
+            System.out.println("|         Cuentas Bancarias        |");
+            System.out.println("------------------------------------");
+            System.out.println("| 1.- Crear cuenta bancaria        |");
+            System.out.println("| 2.- Realizar depósito bancario   |");
+            System.out.println("| 3.- Realizar retiro bancario     |");
+            System.out.println("| 4.- Consultar saldo de la cuenta |");
+            System.out.println("| 5.- Volver al menú principal     |");
+            System.out.println("------------------------------------");
             System.out.print("\nIngrese su opción (1-5): ");
 
             int choice = getUserChoice();
             
             clearScreen();
             switch (choice) {
-                case 1:
-                    Cuenta c = cuentaInputProcessor.crearCuenta(clientes, null);
+                case 1: // Opcion 1: Crear una cuenta bancaria.
+                    Cuenta c = cuentaInputProcessor.crearCuenta(clientes,  null);
                     break;
-                case 2:
+                case 2: // Opcion 2: Realizar un deposito bancario
                     CuentaInputProcessor.realizarDeposito(clientes);
                     break;
-                case 3:
+                case 3: // Opcion 3: Realizar un retiro bancario
                     CuentaInputProcessor.realizarRetiro(clientes);
                     break;
-                case 4:
+                case 4: // Opcion 4: Consultar el saldo de la cuenta.
                     CuentaInputProcessor.consultarSaldo(clientes);
                     break;
-                case 5:
+                case 5: // Opcion 5: Volver al menu principal.
                     exitCuentaMenu = true;
                     break;
                 default:
