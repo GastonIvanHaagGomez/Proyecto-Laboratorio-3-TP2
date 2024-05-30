@@ -94,18 +94,20 @@ public class MenuInputProcessor extends BaseInputProcessor {
 
     public void renderCuentaMenu(List<Cliente> clientes) {
         boolean exitCuentaMenu = false;
-
+    
         while (!exitCuentaMenu) {
             System.out.println("Menú de Cuentas Bancarias");
             System.out.println("1.- Crear cuenta bancaria.");
             System.out.println("2.- Realizar depósito bancario.");
             System.out.println("3.- Realizar retiro bancario.");
             System.out.println("4.- Consultar saldo de la cuenta.");
-            System.out.println("5.- Volver al menú principal.");
-            System.out.print("\nIngrese su opción (1-5): ");
-
+            System.out.println("5.- Ver todos los movimientos de una cuenta.");
+            System.out.println("6.- Volver al menú principal.");
+            System.out.print("\nIngrese su opción (1-6): ");
+    
             int choice = getUserChoice();
-            
+    
+
             clearScreen();
             switch (choice) {
                 case 1:
@@ -121,10 +123,13 @@ public class MenuInputProcessor extends BaseInputProcessor {
                     CuentaInputProcessor.consultarSaldo(clientes);
                     break;
                 case 5:
+                    CuentaInputProcessor.mostrarMovimientos(clientes);
+                    break;
+                case 6:
                     exitCuentaMenu = true;
                     break;
                 default:
-                	System.out.print("Opción inválida. Por favor seleccione (1-5): ");
+                    System.out.print("Opción inválida. Por favor seleccione (1-6): ");
                     break;
             }
         }

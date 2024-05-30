@@ -224,12 +224,11 @@ public class CuentaInputProcessor extends BaseInputProcessor {
             System.out.println("No se encontró ninguna cuenta con ese número.");
         }
     }
-
     // Método para ver todos los movimientos de dinero de una cuenta.
     public static void mostrarMovimientos(List<Cliente> clientes) {
         System.out.print("Ingrese el número de cuenta para ver los movimientos: ");
         Long numeroCuenta = scanner.nextLong();
-
+    
         // Buscar la cuenta correspondiente al número de cuenta ingresado
         Cuenta cuentaSeleccionada = null;
         for (Cliente cliente : clientes) {
@@ -243,25 +242,31 @@ public class CuentaInputProcessor extends BaseInputProcessor {
                 break;
             }
         }
-
+    
         // Si se encuentra la cuenta, mostrar los movimientos
         if (cuentaSeleccionada != null) {
             System.out.println("Movimientos de dinero para la cuenta " + numeroCuenta + ":");
-
+    
             // Definir el formato deseado para la fecha y hora
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-
-            // Iterar sobre los movimientos de la cuenta y mostrarlos
-            for (Movimiento movimiento : cuentaSeleccionada.getMovimientos()) {
-                System.out.println("Tipo de movimiento: " + movimiento.getTipoMovimiento());
-                System.out.println("Monto: " + movimiento.getMonto());
-                // Formatear la fecha y hora en el formato deseado
-                String fechaHoraFormateada = movimiento.getFechaHora().format(formatter);
-                System.out.println("Fecha y hora: " + fechaHoraFormateada);
-                System.out.println("-------------------------");
+    
+            // Verificar si la cuenta tiene movimientos
+            if (!cuentaSeleccionada.getMovimientos().isEmpty()) {
+                // Iterar sobre los movimientos de la cuenta y mostrarlos
+                for (Movimiento movimiento : cuentaSeleccionada.getMovimientos()) {
+                    System.out.println("Tipo de movimiento: " + movimiento.getTipoMovimiento());
+                    System.out.println("Monto: " + movimiento.getMonto());
+                    // Formatear la fecha y hora en el formato deseado
+                    String fechaHoraFormateada = movimiento.getFechaHora().format(formatter);
+                    System.out.println("Fecha y hora: " + fechaHoraFormateada);
+                    System.out.println("-------------------------");
+                }
+            } else {
+                System.out.println("No se encontraron movimientos para esta cuenta.");
             }
         } else {
             System.out.println("No se encontró ninguna cuenta con ese número.");
         }
     }
+
 }
