@@ -16,6 +16,7 @@ public class ClienteInputProcessor extends BaseInputProcessor {
     public Cliente ingresarCliente() {
         Cliente cliente = new Cliente();
         clearScreen();
+        
         Scanner scanner = new Scanner(System.in);
 
         // Ingreso del nombre del cliente:
@@ -55,15 +56,14 @@ public class ClienteInputProcessor extends BaseInputProcessor {
                     // Verificar si el DNI ya está en uso por otro cliente
                     boolean dniExists = clientes.stream().anyMatch(c -> c.getDni() == dni);
                     if (dniExists) {
-                        System.out.println(
-                                "El DNI ingresado ya está asociado a otro cliente. Por favor, ingrese un DNI único.");
+                        System.out.println("El DNI ingresado ya está asociado a otro cliente. Por favor, ingrese un DNI único.");
                     } else {
                         validDni = true;
                         cliente.setDni(dni);
                     }
                 }
             } catch (InputMismatchException e) {
-                System.out.println("DNI inválido. Por favor, ingrese un número de DNI válido.");
+                System.out.print("DNI inválido. Por favor, ingrese un número de DNI válido: ");
                 scanner.nextLine(); // Consumir el salto de línea y limpiar el buffer de entrada
             }
         }
@@ -123,34 +123,35 @@ public class ClienteInputProcessor extends BaseInputProcessor {
         cliente.setBanco(banco);
 
        // Ingreso y validación de fecha de alta del cliente.
-System.out.print("Ingrese la fecha de alta del cliente (Formato: YYYY-MM-DD): ");
-LocalDate fechaAlta = null;
-boolean fechaValida = false;
-while (!fechaValida) {
-    try {
-        fechaAlta = LocalDate.parse(scanner.nextLine());
-        LocalDate hoy = LocalDate.now();
-        int edad = hoy.getYear() - fechaAlta.getYear();
-        
-        // Comprobar si el cliente tiene entre 18 y 100 años
-        if (edad >= 18 && edad <= 100) {
-            fechaValida = true;
-        } else {
-            System.out.print("El cliente debe tener entre 18 y 100 años. Ingrese nuevamente la fecha en formato YYYY-MM-DD: ");
-        }
-    } catch (Exception e) {
-        System.out.print("Formato de fecha inválido. Ingrese la fecha en formato YYYY-MM-DD: ");
-    }
-}
-cliente.setFechaAlta(fechaAlta);
-
-// Añadir el nuevo cliente a la lista de clientes
-clientes.add(cliente);
-
-clearScreen();
-return cliente;
-
-}
+		System.out.print("Ingrese la fecha de alta del cliente (Formato: YYYY-MM-DD): ");
+		LocalDate fechaAlta = null;
+		boolean fechaValida = false;
+		while (!fechaValida) {
+		    try {
+		        fechaAlta = LocalDate.parse(scanner.nextLine());
+		        LocalDate hoy = LocalDate.now();
+		        int edad = hoy.getYear() - fechaAlta.getYear();
+		        
+		        // Comprobar si el cliente tiene entre 18 y 100 años
+		        if (edad >= 18 && edad <= 100) {
+		            fechaValida = true;
+		        } else {
+		            System.out.print("El cliente debe tener entre 18 y 100 años. Ingrese nuevamente la fecha en formato YYYY-MM-DD: ");
+		        }
+		    } catch (Exception e) {
+		        System.out.print("Formato de fecha inválido. Ingrese la fecha en formato YYYY-MM-DD: ");
+		    }
+		}
+		cliente.setFechaAlta(fechaAlta);
+		
+		// Añadir el nuevo cliente a la lista de clientes
+		clientes.add(cliente);
+		
+		clearScreen();
+		scanner.close(); // Cierre el scanner.
+		return cliente;
+		
+		}
     
     // Método para mostrar la lista de clientes generados.
     public void mostrarClientes() {
@@ -184,6 +185,8 @@ return cliente;
         int clienteIndex = scanner.nextInt();
         scanner.nextLine(); // Consumir el salto de línea
 
+        scanner.close(); // Cierre el scanner.
+        
         if (clienteIndex < 1 || clienteIndex > clientes.size()) {
             System.out.println("Selección inválida.");
             return;
@@ -194,41 +197,44 @@ return cliente;
 
         // Pedir al usuario que seleccione qué campo desea modificar
         System.out.println("Seleccione qué desea modificar:");
-        System.out.println("1. Nombre");
-        System.out.println("2. Apellido");
-        System.out.println("3. DNI");
-        System.out.println("4. Dirección");
-        System.out.println("5. Teléfono");
-        System.out.println("6. Tipo de Persona");
-        System.out.println("7. Banco");
-        System.out.println("8. Fecha de Alta");
-        System.out.print("Ingrese su opción (1-8): ");
+        System.out.println("1.- Nombre");
+        System.out.println("2.- Apellido");
+        System.out.println("3.- DNI");
+        System.out.println("4.- Dirección");
+        System.out.println("5.- Teléfono");
+        System.out.println("6.- Tipo de Persona");
+        System.out.println("7.- Banco");
+        System.out.println("8.- Fecha de Alta");
+        System.out.print("\nIngrese su opción (1-8): ");
         int opcion = scanner.nextInt();
         scanner.nextLine(); // Consumir el salto de línea
 
-        // Modificar el campo seleccionado
+        // Se despliegan opciones para modificar el Cliente:
         switch (opcion) {
-            case 1:
+        
+            case 1: // Opcion para ingresar el nuevo nombre del cliente.
                 System.out.print("Ingrese el nuevo nombre: ");
                 String nuevoNombre = scanner.nextLine().trim();
-                // Valida que el nombre sea solo letras
+                // Valida que el nombre sea solo con letras, no estan permitidos simbolos/numeros.
                 while (!nuevoNombre.matches("[A-Za-záéíóúÁÉÍÓÚüÜñÑ\\s]+")) {
                     System.out.print("Nombre inválido. Por favor, ingrese un nombre válido: ");
                     nuevoNombre = scanner.nextLine().trim();
                 }
                 cliente.setNombre(nuevoNombre);
                 break;
-            case 2:
+                
+            case 2: // Opcion para ingresar el nuevo apellido del cliente.
                 System.out.print("Ingrese el nuevo apellido: ");
                 String nuevoApellido = scanner.nextLine().trim();
-                // Valida que el apellido sea solo letras
+                // Valida que el nombre sea solo con letras, no estan permitidos simbolos/numeros.
                 while (!nuevoApellido.matches("[A-Za-záéíóúÁÉÍÓÚüÜñÑ\\s]+")) {
                     System.out.println("Apellido inválido. Por favor, ingrese un apellido válido: ");
                     nuevoApellido = scanner.nextLine().trim();
                 }
                 cliente.setApellido(nuevoApellido);
                 break;
-            case 3:
+                
+            case 3: // Opcion para ingresar el nuevo DNI del cliente.
                 boolean validDni = false;
                 do {
                     System.out.print("Ingrese el nuevo DNI: ");
@@ -248,12 +254,14 @@ return cliente;
                     }
                 } while (!validDni);
                 break;
-            case 4:
+                
+            case 4: // Opcion para ingresar la nueva direccion del cliente.
                 System.out.print("Ingrese la nueva dirección: ");
                 String nuevaDireccion = scanner.nextLine().trim();
                 cliente.setDireccion(nuevaDireccion);
                 break;
-            case 5:
+                
+            case 5: // Opcion para ingresar el nuevo telefono del cliente.
                 long nuevoTelefono;
                 boolean validTelefono = false;
                 do {
@@ -268,17 +276,20 @@ return cliente;
                 } while (!validTelefono);
                 cliente.setTelefono(nuevoTelefono);
                 break;
-            case 6:
+                
+            case 6: // Opcion para modificar el tipo de persona del cliente.
                 System.out.print("Ingrese el nuevo tipo de persona (F para Física, J para Jurídica): ");
                 String nuevoTipoPersona = scanner.nextLine().trim().toUpperCase();
                 cliente.setTipoPersona(TipoPersona.fromString(nuevoTipoPersona));
                 break;
-            case 7:
+                
+            case 7: // // Opcion para ingresar el nuevo banco asociado del cliente.
                 System.out.print("Ingrese el nuevo banco: ");
                 String nuevoBanco = scanner.nextLine().trim();
                 cliente.setBanco(nuevoBanco);
                 break;
-            case 8:
+                
+            case 8: // Opcion para ingresar la nueva fecha de alta del cliente.
                 LocalDate nuevaFechaAlta = null;
                 boolean fechaValida = false;
                 do {
@@ -286,6 +297,7 @@ return cliente;
                     try {
                         nuevaFechaAlta = LocalDate.parse(scanner.nextLine().trim());
                         fechaValida = true;
+                        // Validacion en caso de que la fecha se ingrese incorrectamente.
                     } catch (Exception e) {
                         System.out.print("Formato de fecha inválido. Ingrese la fecha en formato YYYY-MM-DD: ");
                     }
@@ -295,13 +307,15 @@ return cliente;
             default:
                 System.out.println("Opción inválida.");
         }
+        scanner.close();
     }
-
+    
+    // Metodo para eliminar un cliente.
     public void eliminarCliente() {
         Scanner scanner = new Scanner(System.in);
 
         // Mostrar lista de clientes para seleccionar uno a eliminar
-        System.out.println("Lista de clientes:");
+        System.out.println("Lista de clientes: ");
         for (int i = 0; i < clientes.size(); i++) {
             System.out.println((i + 1) + ". " + clientes.get(i).getNombre() + " " + clientes.get(i).getApellido());
         }
@@ -309,26 +323,30 @@ return cliente;
         // Pedir al usuario que seleccione el cliente a eliminar
         System.out.print("Seleccione el cliente que desea eliminar (1-" + clientes.size() + "): ");
         int clienteIndex = scanner.nextInt();
-        scanner.nextLine(); // Consumir el salto de línea
+        scanner.nextLine();
 
+        scanner.close(); // Cierre el scanner.
         if (clienteIndex < 1 || clienteIndex > clientes.size()) {
-            System.out.println("Selección inválida.");
+            System.out.println("Error. Seleccion invalida.");
             return;
+            
         }
 
         // Obtener el cliente seleccionado
         Cliente cliente = clientes.get(clienteIndex - 1);
 
-        // Confirmar la eliminación del cliente
+        // Se consulta si desea la eliminacion del cliente seleccionado.
         System.out.println("¿Está seguro que desea eliminar a " + cliente.getNombre() + " " + cliente.getApellido() + "? (S/N)");
         String confirmacion = scanner.nextLine().trim().toUpperCase();
 
-        if (confirmacion.equals("S")) {
-            // Eliminar el cliente de la lista
-            clientes.remove(cliente);
+        if (confirmacion.equals("S")) { 
+            clientes.remove(cliente); // Eliminar el cliente de la lista
             System.out.println("El cliente ha sido eliminado exitosamente.");
         } else {
-            System.out.println("Operación cancelada.");
+            System.out.println("Operación cancelada."); // Cancela la eliminacion del cliente de la lista.
         }
+        scanner.close(); // Cierre el scanner.
     }
 }
+
+
